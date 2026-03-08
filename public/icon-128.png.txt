@@ -1,0 +1,6 @@
+This is a placeholder. In production, you should create actual icon files:
+- icon-16.png (16x16)
+- icon-48.png (48x48)
+- icon-128.png (128x128)
+
+Use a flame emoji or fire icon design in orange (#f97316) to represent Calcifer.
