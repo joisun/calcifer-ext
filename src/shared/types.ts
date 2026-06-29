@@ -22,9 +22,10 @@ export interface FeatureFlags {
 }
 
 export interface ProviderConfig {
-  provider: 'openai' | 'anthropic' | 'gemini' | 'ollama' | 'custom';
+  provider: 'openai' | 'anthropic' | 'gemini' | 'google' | 'deepseek' | 'ollama' | 'openrouter' | 'custom';
   apiKey: string;
   baseUrl?: string;
+  modelsUrl?: string;
   model: string;
   maxTokens: number;
   temperature: number;

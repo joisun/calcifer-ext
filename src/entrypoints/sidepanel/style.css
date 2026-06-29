@@ -1,16 +1,192 @@
+@import "../../components/agent-elements/agent-ui.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-body {
-  margin: 0;
-  padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-  background: #1a1a1a;
-  color: #e5e5e5;
+@layer base {
+  :root {
+    --background: 0 0% 97%;
+    --foreground: 240 6% 14%;
+    --surface: 0 0% 100%;
+    --surface-2: 240 5% 96%;
+    --surface-3: 240 5% 92%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 6% 14%;
+    --secondary: 240 5% 94%;
+    --secondary-foreground: 240 6% 14%;
+    --muted: 240 5% 94%;
+    --muted-foreground: 240 5% 42%;
+    --primary: 24 95% 53%;
+    --primary-foreground: 0 0% 100%;
+    --accent: 24 95% 94%;
+    --accent-foreground: 24 90% 35%;
+    --destructive: 4 75% 50%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 142 50% 42%;
+    --warning: 34 90% 50%;
+    --border: 240 6% 86%;
+    --input: 240 6% 86%;
+    --ring: 24 95% 53%;
+    --an-border-radius: 8px;
+    --an-message-border-radius: 8px;
+    --an-input-border-radius: 8px;
+    --an-primary-color: #f97316;
+    --an-send-button-bg: #f97316;
+    --an-send-button-color: #ffffff;
+    --an-border-color: hsl(var(--border) / 0.55);
+    --an-input-border-color: hsl(var(--border) / 0.5);
+    --an-tool-border-color: hsl(var(--border) / 0.45);
+    --an-input-background: hsl(var(--surface));
+    --an-user-message-bg: hsl(var(--primary) / 0.16);
+    --radius: 8px;
+  }
+
+  .dark {
+    --background: 240 4% 14%;
+    --foreground: 0 0% 94%;
+    --surface: 240 4% 17%;
+    --surface-2: 240 4% 20%;
+    --surface-3: 240 4% 23%;
+    --card: 240 4% 17%;
+    --card-foreground: 0 0% 94%;
+    --secondary: 240 4% 20%;
+    --secondary-foreground: 0 0% 94%;
+    --muted: 240 4% 20%;
+    --muted-foreground: 240 5% 64%;
+    --primary: 24 95% 53%;
+    --primary-foreground: 0 0% 100%;
+    --accent: 24 80% 18%;
+    --accent-foreground: 24 95% 68%;
+    --destructive: 4 70% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 142 45% 55%;
+    --warning: 34 90% 60%;
+    --border: 240 4% 28%;
+    --input: 240 4% 24%;
+    --ring: 24 95% 53%;
+    --an-border-radius: 8px;
+    --an-message-border-radius: 8px;
+    --an-input-border-radius: 8px;
+    --an-primary-color: #f97316;
+    --an-send-button-bg: #f97316;
+    --an-send-button-color: #ffffff;
+    --an-background: hsl(var(--background));
+    --an-background-secondary: hsl(var(--surface-2));
+    --an-background-tertiary: hsl(var(--surface));
+    --an-foreground: hsl(var(--foreground));
+    --an-foreground-muted: hsl(var(--muted-foreground));
+    --an-border-color: hsl(var(--border) / 0.55);
+    --an-input-border-color: hsl(var(--border) / 0.45);
+    --an-tool-border-color: hsl(var(--border) / 0.4);
+    --an-input-background: hsl(var(--surface));
+    --an-user-message-bg: hsl(var(--primary) / 0.16);
+    --an-user-message-text: hsl(var(--foreground));
+  }
+
+  * {
+    border-color: hsl(var(--border));
+  }
+
+  .dark * {
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+
+  html {
+    font-feature-settings: "ss01", "cv11", "kern";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Arial, "PingFang SC", sans-serif;
+    background: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  h1,
+  h2,
+  h3,
+  .font-display {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Arial, sans-serif;
+    letter-spacing: 0;
+  }
 }
 
 #root {
   width: 100%;
   height: 100vh;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.18s ease-out;
+}
+
+.animate-slideIn {
+  animation: slideIn 0.18s ease-out;
+}
+
+.animate-slideUp {
+  animation: slideUp 0.18s ease-out;
+}
+
+.calcifer-panel {
+  background: hsl(var(--surface));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+}
+
+.dark .calcifer-panel {
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: hsl(var(--foreground) / 0.18);
+  border-radius: 999px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--foreground) / 0.3);
 }

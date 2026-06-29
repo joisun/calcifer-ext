@@ -1,7 +1,13 @@
 export function createSelectionToolbar() {
   let toolbar: HTMLDivElement | null = null;
+  let hideTimeout: number | null = null;
 
-  document.addEventListener('mouseup', () => {
+  const handleSelection = () => {
+    if (hideTimeout) {
+      clearTimeout(hideTimeout);
+      hideTimeout = null;
+    }
+
     const selection = window.getSelection();
     const text = selection?.toString().trim();
 
@@ -24,28 +30,51 @@ export function createSelectionToolbar() {
     style.textContent = `
       .toolbar {
         position: fixed;
-        top: ${rect.top - 45}px;
-        left: ${rect.left}px;
-        background: #1f2937;
-        border: 1px solid #374151;
-        border-radius: 6px;
+        top: ${Math.max(10, rect.top - 50)}px;
+        left: ${rect.left + rect.width / 2}px;
+        transform: translateX(-50%);
+        background: #2b2b2d;
+        border: 1px solid rgba(255,255,255,0.10);
+        border-radius: 8px;
         padding: 4px;
         display: flex;
         gap: 4px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        box-shadow: none;
         z-index: 999999;
+        animation: slideUp 0.16s ease-out;
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Arial, sans-serif;
+      }
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateX(-50%) translateY(2px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(-50%) translateY(0);
+        }
       }
       button {
-        padding: 6px 12px;
-        background: #374151;
-        color: white;
-        border: none;
-        border-radius: 4px;
+        height: 28px;
+        padding: 0 8px;
+        background: transparent;
+        color: rgba(255,255,255,0.78);
+        border: 1px solid transparent;
+        border-radius: 6px;
         cursor: pointer;
-        font-size: 13px;
+        font-size: 12px;
+        font-weight: 500;
+        transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+        white-space: nowrap;
       }
       button:hover {
-        background: #4b5563;
+        background: #3a3a3c;
+        color: #fff;
+        border-color: rgba(255,255,255,0.08);
+      }
+      button:active {
+        background: rgba(249,115,22,0.18);
+        color: #fb923c;
       }
     `;
 
@@ -53,7 +82,7 @@ export function createSelectionToolbar() {
     container.className = 'toolbar';
 
     const buttons = [
-      { text: 'Ask AI', action: () => openSidePanelWithText(text, 'ask') },
+      { text: 'Ask', action: () => openSidePanelWithText(text, 'ask') },
       { text: 'Translate', action: () => openSidePanelWithText(text, 'translate') },
       { text: 'Explain', action: () => openSidePanelWithText(text, 'explain') }
     ];
@@ -61,19 +90,37 @@ export function createSelectionToolbar() {
     buttons.forEach(({ text: btnText, action }) => {
       const btn = document.createElement('button');
       btn.textContent = btnText;
-      btn.onclick = action;
+      btn.onclick = () => {
+        action();
+        if (toolbar) {
+          toolbar.remove();
+          toolbar = null;
+        }
+      };
       container.appendChild(btn);
     });
 
     shadow.appendChild(style);
     shadow.appendChild(container);
     document.body.appendChild(toolbar);
+  };
+
+  document.addEventListener('mouseup', handleSelection);
+  document.addEventListener('keyup', (e) => {
+    if (e.key === 'Escape' && toolbar) {
+      toolbar.remove();
+      toolbar = null;
+    }
   });
 
   document.addEventListener('mousedown', (e) => {
     if (toolbar && !toolbar.contains(e.target as Node)) {
-      toolbar.remove();
-      toolbar = null;
+      hideTimeout = window.setTimeout(() => {
+        if (toolbar) {
+          toolbar.remove();
+          toolbar = null;
+        }
+      }, 200);
     }
   });
 }
